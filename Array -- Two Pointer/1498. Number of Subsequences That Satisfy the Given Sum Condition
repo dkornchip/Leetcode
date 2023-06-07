@@ -1,0 +1,31 @@
+/*The key to solving this problem is understanding first that it is NOT DP not Backtracking!!!!
+Instead, follow a two pointer approach based on the principle that only 2^(r-l) subsequences exist for
+a particular window.*/
+
+
+var numSubseq = function(nums, target) {
+    ///Sort array
+    nums.sort((a,b) => a-b);
+    
+    ///Initialize vars. Pow array used for convienience later
+    let n = nums.length;
+    let mod = 1e9 + 7;
+    let pows = [n];
+    pows[0] = 1;
+    for(let i=1; i<n; i++){
+        pows[i] = pows[i-1]* 2 % mod;
+    }
+    ///Utilizes template for two pointer problems.
+    let l = 0;
+    let r = n - 1;
+    let res = 0;
+    while(l <= r){
+        if(nums[l] + nums[r] > target){
+            r--;
+        }
+        else{
+            res = (res + pows[r-l++])%mod;
+        }
+    }
+    return res;
+};
