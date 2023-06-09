@@ -1,5 +1,5 @@
 /*Understanding this problem begins when you realize that you need to build an adjacency list and use DFS to detect cycles.
-If a cycle is detected, return that edge*/
+If a cycle is detected, return that edge. Also, notice how this solution is designed to DFS while aL is built. Nifty, ain't it?*/
 var findRedundantConnection = function(edges) {
     let aL = {};
     for(let [a,b] of edges){
