@@ -1,0 +1,26 @@
+/*Key to solving this problem is grasping the "First Bad Version" variation of Binary Search first. This will be used to find the next available job from any selected
+index. ("Right" also needs to be initialized at list.length to account for test cases) Rest of the problem follows general strategy of bottom up DP memoization*/
+
+var jobScheduling = function(startTime, endTime, profit) {
+    let jobs = [];
+    let dp = new Array(startTime.length + 1).fill(0);
+    for(let i=0; i<startTime.length; i++){
+        jobs.push([startTime[i], endTime[i], profit[i]]);
+    }
+    jobs.sort((a,b) => a[0] - b[0]);
+    const findNext = (i) => {
+        let left = i + 1;
+        let right = jobs.length;
+        while(left < right){
+            let mid = Math.floor((left+right)/2);
+            if(jobs[i][1] <= jobs[mid][0]) right = mid;
+            else left = mid + 1;
+        }
+        return left;
+    }
+    for(let i=jobs.length-1; ~i; i--){
+        let next = findNext(i);
+        dp[i] = Math.max(dp[i+1], jobs[i][2] + dp[next]);
+    }
+    return dp[0];
+};
